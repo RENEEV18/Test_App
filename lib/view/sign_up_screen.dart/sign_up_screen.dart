@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:test_app/controller/signup_controller/signup_controller.dart';
+import 'package:test_app/model/sign_up_model/sign_up_model.dart';
 import 'package:test_app/utils/colors/colors.dart';
 import 'package:test_app/utils/styles/sizedbox.dart';
 import 'package:test_app/view/login_screen/login_screen.dart';
@@ -78,7 +79,16 @@ class SignUpScreen extends StatelessWidget {
                             AppSize.kHeight30,
                             TextfieldWidget(
                               hintText: "Name",
-                              controller: value.name,
+                              // stored input from user.
+                              onChanged: (data) {
+                                var userInput = SignUpModel(
+                                  value.signup.name,
+                                  data,
+                                  data,
+                                  data,
+                                );
+                                value.userInput(userInput);
+                              },
                               keyboardType: TextInputType.name,
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 20,
@@ -95,8 +105,16 @@ class SignUpScreen extends StatelessWidget {
                             AppSize.kHeight30,
                             TextfieldWidget(
                               hintText: "Email",
+                              onChanged: (data) {
+                                var userInput = SignUpModel(
+                                  data,
+                                  value.signup.email,
+                                  data,
+                                  data,
+                                );
+                                value.userInput(userInput);
+                              },
                               keyboardType: TextInputType.emailAddress,
-                              controller: value.emailId,
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 15,
@@ -111,26 +129,17 @@ class SignUpScreen extends StatelessWidget {
                             ),
                             AppSize.kHeight30,
                             TextfieldWidget(
-                              hintText: "Phone number",
-                              keyboardType: TextInputType.number,
-                              controller: value.phoneNo,
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 15,
-                              ),
-                              suffixIcon: const Icon(
-                                Icons.phone,
-                              ),
-                              obscureText: false,
-                              errorStyle:
-                                  const TextStyle(color: AppColors.kWhite),
-                              validator: (p0) => value.mobileValdation(p0),
-                            ),
-                            AppSize.kHeight30,
-                            TextfieldWidget(
                               hintText: "Password",
+                              onChanged: (data) {
+                                var userInput = SignUpModel(
+                                  data,
+                                  data,
+                                  value.signup.password,
+                                  data,
+                                );
+                                value.userInput(userInput);
+                              },
                               keyboardType: TextInputType.visiblePassword,
-                              controller: value.password,
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 15,
@@ -147,23 +156,31 @@ class SignUpScreen extends StatelessWidget {
                             ),
                             AppSize.kHeight30,
                             TextfieldWidget(
-                              hintText: "Confirm password",
-                              keyboardType: TextInputType.visiblePassword,
-                              controller: value.confirmPassword,
+                              hintText: "DOB",
+                              onChanged: (data) {
+                                var userInput = SignUpModel(
+                                  data,
+                                  data,
+                                  data,
+                                  value.signup.dob,
+                                );
+                                value.userInput(userInput);
+                              },
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 15,
                               ),
                               suffixIcon: IconButton(
                                   onPressed: () {
-                                    value.visibility();
+                                    value.dateTime(context);
                                   },
-                                  icon: value.icon),
-                              obscureText: value.obscureText,
+                                  icon: const Icon(
+                                    Icons.calendar_month,
+                                  )),
+                              obscureText: false,
                               errorStyle:
                                   const TextStyle(color: AppColors.kWhite),
-                              validator: (p0) =>
-                                  value.confirmpasswordValdation(p0),
+                              validator: (p0) => value.dateValdation(p0),
                             ),
                             AppSize.kHeight30,
                             ButtonWidget(

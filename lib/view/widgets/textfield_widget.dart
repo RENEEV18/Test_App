@@ -13,6 +13,7 @@ class TextfieldWidget extends StatelessWidget {
     required this.obscureText,
     this.errorStyle,
     this.keyboardType,
+    this.onChanged,
   });
   final String? hintText;
   final Widget? suffixIcon;
@@ -23,6 +24,7 @@ class TextfieldWidget extends StatelessWidget {
   final bool obscureText;
   final TextStyle? errorStyle;
   final TextInputType? keyboardType;
+  final Function(String)? onChanged;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -36,6 +38,7 @@ class TextfieldWidget extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         validator: validator,
+        onChanged: onChanged,
         keyboardType: keyboardType,
         obscureText: obscureText,
         decoration: InputDecoration(

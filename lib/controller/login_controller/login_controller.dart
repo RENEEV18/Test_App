@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/model/login_model/login_model.dart';
 import 'package:test_app/utils/colors/colors.dart';
 import 'package:test_app/view/home_screen/home_screen.dart';
 
@@ -6,6 +7,18 @@ class Logincontroller extends ChangeNotifier {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
   final formGlobalKey = GlobalKey<FormState>();
+
+  LoginModel? loginModel;
+
+  //controller function to handle the user data from the model.
+
+  LoginModel get login => loginModel!;
+
+  void userInput(LoginModel model) {
+    loginModel = model;
+    notifyListeners();
+  }
+///////////////////////////////////////////
 
   void logIn(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
@@ -47,9 +60,9 @@ class Logincontroller extends ChangeNotifier {
   String? passwordValdation(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your password';
-    } else if (value.length < 8) {
-      return 'Password must have atleast 8 character';
-    } else if (value.length > 8) {
+    } else if (value.length < 6) {
+      return 'Password must have atleast 6 character';
+    } else if (value.length > 6) {
       return 'Password exceeds 8 character';
     }
     return null;

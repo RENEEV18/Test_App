@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/model/sign_up_model/sign_up_model.dart';
 import 'package:test_app/utils/colors/colors.dart';
 import 'package:test_app/view/home_screen/home_screen.dart';
 
 class SignUpController extends ChangeNotifier {
   final TextEditingController name = TextEditingController();
   final TextEditingController emailId = TextEditingController();
-  final TextEditingController phoneNo = TextEditingController();
   final TextEditingController password = TextEditingController();
-  final TextEditingController confirmPassword = TextEditingController();
+  TextEditingController datePick = TextEditingController();
   final formGlobalKey = GlobalKey<FormState>();
+  DateTime selectDate = DateTime.now();
+
+  SignUpModel? signUpModel;
+
+  //controller function to handle the user data from the model.
+
+  SignUpModel get signup => signUpModel!;
+
+  void userInput(SignUpModel model) {
+    signUpModel = model;
+    notifyListeners();
+  }
 
   void signupUser(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
@@ -22,8 +34,6 @@ class SignUpController extends ChangeNotifier {
     name.clear();
     emailId.clear();
     password.clear();
-    phoneNo.clear();
-    confirmPassword.clear();
   }
 
   String? nameValidation(String? value) {
@@ -46,59 +56,59 @@ class SignUpController extends ChangeNotifier {
     }
   }
 
-  String? mobileValdation(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your mobile number';
-    } else if (value.length < 10) {
-      return 'Invalid mobile number,make sure your entered 10 digits';
-    } else {
-      return null;
-    }
-  }
-
   String? passwordValdation(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your password';
-    } else if (value.length < 8) {
-      return 'Password must have atleast 8 character';
-    } else if (value.length > 8) {
-      return 'Password exceeds 8 character';
+    } else if (value.length < 6) {
+      return 'Password must have atleast 6 character';
+    } else if (value.length > 6) {
+      return 'Password exceeds 6 character';
     }
     return null;
   }
 
-  String? confirmpasswordValdation(String? value) {
+  String? dateValdation(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please confirm your password';
-    } else if (value.length < 8) {
-      return 'Password must have atleast 8 character';
-    } else if (value != password.text) {
-      return 'Password does not match';
+      return 'Please select the date';
     } else {
       return null;
     }
   }
 
   bool obscureText = true;
-  Icon icon = const Icon(
+  Icon icon = Icon(
     Icons.visibility_off,
-    color: AppColors.kBlack,
+    color: AppColors.kBlack.withOpacity(0.7),
   );
 
   void visibility() {
     if (obscureText == false) {
-      icon = const Icon(
+      icon = Icon(
         Icons.visibility_off,
-        color: AppColors.kBlack,
+        color: AppColors.kBlack.withOpacity(0.7),
       );
       obscureText = true;
       notifyListeners();
     } else {
-      icon = const Icon(
+      icon = Icon(
         Icons.visibility,
-        color: AppColors.kBlack,
+        color: AppColors.kBlack.withOpacity(0.7),
       );
       obscureText = false;
+      notifyListeners();
+    }
+  }
+
+  void dateTime(context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectDate,
+      firstDate: DateTime(2014, 8),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != selectDate) {
+      selectDate = picked;
+      signUpModel!.dob = "${selectDate.toLocal()}".split(' ')[0].toString();
       notifyListeners();
     }
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:test_app/controller/login_controller/login_controller.dart';
+import 'package:test_app/model/login_model/login_model.dart';
 import 'package:test_app/utils/colors/colors.dart';
 import 'package:test_app/utils/styles/sizedbox.dart';
 import 'package:test_app/view/sign_up_screen.dart/sign_up_screen.dart';
@@ -73,7 +74,14 @@ class LoginScreen extends StatelessWidget {
                             children: [
                               AppSize.kHeight40,
                               TextfieldWidget(
-                                controller: value.email,
+                                // stored input from user.
+                                onChanged: (data) {
+                                  var userInput = LoginModel(
+                                    data,
+                                    value.login.email,
+                                  );
+                                  value.userInput(userInput);
+                                },
                                 hintText: "Email",
                                 hintStyle: const TextStyle(fontSize: 16),
                                 contentPadding: const EdgeInsets.symmetric(
@@ -92,7 +100,14 @@ class LoginScreen extends StatelessWidget {
                               ),
                               AppSize.kHeight30,
                               TextfieldWidget(
-                                controller: value.password,
+                                // stored input from user.
+                                onChanged: (data) {
+                                  var userInput = LoginModel(
+                                    value.login.password,
+                                    data,
+                                  );
+                                  value.userInput(userInput);
+                                },
                                 hintText: "Password",
                                 errorStyle: const TextStyle(
                                   color: AppColors.kWhite,
